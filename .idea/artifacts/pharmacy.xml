@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="pharmacy">
+    <output-path>$PROJECT_DIR$/out/artifacts/pharmacy</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="jsp-servlet-jdbc-mysql-crud-tutorial" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="jsp-servlet-jdbc-mysql-crud-tutorial/web/Web" />
+    </root>
+  </artifact>
+</component>
