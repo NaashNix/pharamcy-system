@@ -4,14 +4,20 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
+import net.javaguides.usermanagement.bo.BOFactory;
+import net.javaguides.usermanagement.bo.SuperBo;
+import net.javaguides.usermanagement.bo.custom.PatientBo;
 import net.javaguides.usermanagement.dao.UserDAO;
+import net.javaguides.usermanagement.model.Patient;
 import net.javaguides.usermanagement.model.User;
 
 /**
@@ -24,7 +30,11 @@ import net.javaguides.usermanagement.model.User;
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAO userDAO;
-	
+
+	@Resource(name = "java:comp/env/jdbc/pool")
+	public  static DataSource dataSource;
+	PatientBo patientBo = (PatientBo) BOFactory.getBoFactory().getBo(BOFactory.BOTypes.PATIENT);
+
 	public void init() {
 		userDAO = new UserDAO();
 	}
@@ -37,10 +47,21 @@ public class UserServlet extends HttpServlet {
 					String password = request.getParameter("country");
 					System.out.println("Username"+username);
 					System.out.println("Password"+password);
-					User existingUser = new User(01, "sadsd", "asdfs", "500");
-					RequestDispatcher dispatcher = request.getRequestDispatcher("Dashboard.jsp");
-					request.setAttribute("user", existingUser);
-					dispatcher.forward(request,response);
+					// Login checked && Patient Dashboard.jsp return.
+					try {
+						Patient patient = patientBo.checkLogin(username, password);
+						if(patient != null) {
+							RequestDispatcher dispatcher = request.getRequestDispatcher("Dashboard.jsp");
+							request.setAttribute("user", patient);
+							dispatcher.forward(request, response);
+						}else {
+							RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+							request.setAttribute("errorMessage","display:block !important;");
+							dispatcher.forward(request,response);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 			}
 	}

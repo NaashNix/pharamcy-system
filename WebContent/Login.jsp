@@ -21,7 +21,8 @@
         }
 
         .sMainParent{
-            height: calc(100vh - 8rem);
+            /*has to keep some 8rem distance if we add menu bar*/
+            height: calc(100vh);
             display: flex;
             flex-direction: row;
         }
@@ -142,12 +143,22 @@
             border: 1px solid #f19502 !important;
             box-shadow: 0 0 0 0.25rem rgba(241, 149, 2, 0.25);
         }
+
+        .error-message{
+            display: none;
+            font-family: 'Inter';
+            font-size: 1.3rem;
+            color: darkred;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="sMainParent">
     <div class="sLeftSide">
-        <img src=".<%=request.getContextPath()+"/WebContent/loginBackground.jpg"%>" />
+        <a href="https://ibb.co/r3VtwXQ"><img src="https://i.ibb.co/XDq4CGW/login-Background.jpg" alt="login-Background" border="0"></a>
         <div class="sTitleContainer">
             <span class="sLeftMainHeading">LOGIN</span>
             <span class="sLeftSubHeading">Welcome Back! Login your account to place a order.</span>
@@ -159,23 +170,34 @@
                 <div class="sDualInputGroup">
 
                     <fieldset class="form-group">
-                        <label>Username</label> <input type="text"
+                        <label>Username</label>
+                        <input type="text"
                             value="<c:out value='${user.name}' />"
                             name="name" required="required">
                     </fieldset>
 
-                    <fieldset class="form-group">
-                        <label>Password</label> <input type="text"
+                    <fieldset class="form-group" style="margin-left: 1.5rem">
+                        <label>Password</label>
+                        <input type="text"
                             value="<c:out value='${user.country}' />"
                             name="country" required="required">
                     </fieldset>
 
                 </div>
             </div>
+            <span
+                    class="error-message"
+                    style="
+                    <c:if test="${not empty errorMessage}">
+                        <c:out value="${errorMessage}"/>
+                            </c:if>"
+            >
+                        Username or Password Mismatch!
+                    </span>
             <div class="sSubmitButtonParent">
 <%--                <a class="btn sBtn1" href="login?id=<c:out value='${user.id}' />&&">Login</a>--%>
-                    <button type="submit" class="btn sBtn2">Cancel</button>
-                    <button class="btn sBtn2">Cancel</button>
+                    <button type="reset" class="btn sBtn2">Cancel</button>
+                    <button type="submit" class="btn sBtn1">Login</button>
             </div>
         </form>
     </div>

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="net.javaguides.usermanagement.model.User" %><%--
   Created by IntelliJ IDEA.
   User: naashnix
   Date: 11/3/22
@@ -11,6 +11,10 @@
     <title>Title</title>
 </head>
 <body>
-    <h1><c:out value="${user.name}" /></h1>
+    <h1>${user.patientId}</h1>
+    <h1>${user.firstName}</h1>
+    <h1>${user.userName}</h1>
+    <h1>${user.secondName}</h1>
+    <h1>${user.idNumber}</h1>
 </body>
 </html>
