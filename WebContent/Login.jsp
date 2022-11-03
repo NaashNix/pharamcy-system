@@ -147,34 +147,37 @@
 <body>
 <div class="sMainParent">
     <div class="sLeftSide">
-<%--        <img src="<c:url value="/WEB-INF/loginBackground.jpg"/>" />--%>
-        <img src="${loginBackground.jpg}" height="500" width="500">
+        <img src=".<%=request.getContextPath()+"/WebContent/loginBackground.jpg"%>" />
         <div class="sTitleContainer">
             <span class="sLeftMainHeading">LOGIN</span>
             <span class="sLeftSubHeading">Welcome Back! Login your account to place a order.</span>
         </div>
     </div>
     <div class="sRightSide">
-        <div class="sSignupForm">
+        <form class="sSignupForm" action="login" method="post">
             <div>
                 <div class="sDualInputGroup">
-                    <div class="mb-3 mlCustom">
-                        <label for="lUsernameField" class="form-label fontFace">Username</label>
-                        <input type="text" class="form-control" id="lUsernameField"
-                               placeholder="At least 4 characters.">
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="lPasswordField" class="form-label fontFace">Password</label>
-                        <input type="password" class="form-control" id="lPasswordField" placeholder="">
-                    </div>
+                    <fieldset class="form-group">
+                        <label>Username</label> <input type="text"
+                            value="<c:out value='${user.name}' />"
+                            name="name" required="required">
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <label>Password</label> <input type="text"
+                            value="<c:out value='${user.country}' />"
+                            name="country" required="required">
+                    </fieldset>
+
                 </div>
             </div>
             <div class="sSubmitButtonParent">
-                <button class="btn sBtn1" onclick="signupButtonClicked()">Login</button>
-                <button class="btn sBtn2">Cancel</button>
+<%--                <a class="btn sBtn1" href="login?id=<c:out value='${user.id}' />&&">Login</a>--%>
+                    <button type="submit" class="btn sBtn2">Cancel</button>
+                    <button class="btn sBtn2">Cancel</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 </body>

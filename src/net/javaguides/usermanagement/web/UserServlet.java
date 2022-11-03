@@ -29,9 +29,20 @@ public class UserServlet extends HttpServlet {
 		userDAO = new UserDAO();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+			String action = request.getServletPath();
+			switch (action) {
+				case "/login" :
+					String username = request.getParameter("name");
+					String password = request.getParameter("country");
+					System.out.println("Username"+username);
+					System.out.println("Password"+password);
+					User existingUser = new User(01, "sadsd", "asdfs", "500");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("Dashboard.jsp");
+					request.setAttribute("user", existingUser);
+					dispatcher.forward(request,response);
+
+			}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
