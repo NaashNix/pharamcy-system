@@ -199,6 +199,11 @@
                     <button type="reset" class="btn sBtn2">Cancel</button>
                     <button type="submit" class="btn sBtn1">Login</button>
             </div>
+            <div>
+                <a href="<%=request.getContextPath()%>/sighup">
+                    <span>Not a user? Singnup here!</span>
+                </a>
+            </div>
         </form>
     </div>
 </div>

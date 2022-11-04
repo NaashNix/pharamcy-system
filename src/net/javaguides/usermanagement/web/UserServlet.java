@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.GenericServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import net.javaguides.usermanagement.bo.custom.PatientBo;
 import net.javaguides.usermanagement.dao.UserDAO;
 import net.javaguides.usermanagement.model.Patient;
 import net.javaguides.usermanagement.model.User;
+import net.javaguides.usermanagement.util.GenerateUserID;
 
 /**
  * ControllerServlet.java
@@ -63,6 +65,40 @@ public class UserServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 
+				case "/newSignUp" :
+					String firstName = request.getParameter("firstName");
+					String secondName = request.getParameter("secondName");
+					String nicNumber = request.getParameter("nicNumber");
+					String birthday = request.getParameter("birthday");
+					String address = request.getParameter("address");
+					String email = request.getParameter("email");
+					String signUsername = request.getParameter("username");
+					String signPassword = request.getParameter("password");
+					GenerateUserID generateUserID = new GenerateUserID();
+					Patient newPatient = new Patient(
+							generateUserID.generateNewId(),
+							firstName,
+							signUsername,
+							secondName,
+							nicNumber,
+							signPassword,
+							email,
+							address,
+							birthday
+					);
+
+					try {
+						patientBo.add(newPatient);
+						RequestDispatcher dispatcher = request.getRequestDispatcher("Registered.jsp");
+						request.setAttribute("user", firstName);
+						dispatcher.forward(request, response);
+					} catch (SQLException | ClassNotFoundException throwables) {
+						throwables.printStackTrace();
+					}finally {
+						sighupUser(request,response);
+					}
+					break;
+
 			}
 	}
 
@@ -87,12 +123,28 @@ public class UserServlet extends HttpServlet {
 			case "/update":
 				updateUser(request, response);
 				break;
+
+			case "/sighup" :
+				System.out.println("sing up in switch");
+				sighupUser(request,response);
+				break;
+
 			default:
 				listUser(request, response);
 				break;
 			}
 		} catch (SQLException ex) {
 			throw new ServletException(ex);
+		}
+	}
+
+	private void sighupUser(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("Signup.jsp");
+			System.out.println("sighupUser Called");
+			requestDispatcher.forward(request,response);
+		} catch (ServletException | IOException e) {
+			e.printStackTrace();
 		}
 	}
 
