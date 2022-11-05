@@ -212,7 +212,7 @@
         <a href="" class="menuLink">Order History</a>
         <a href="" class="menuLink">Logout</a>
 
-        <a style="height: 80%;" href="https://imgbb.com/">
+        <a style="height: 80%;" onclick="cartButtonClicked(event)">
             <img style="height: 100%;" src="https://i.ibb.co/GsXJqmX/icons8-shopping-cart-90.png" alt="icons8-shopping-cart-90" border="0">
         </a>
     </div>
@@ -264,9 +264,57 @@
 
         </div>
     </span>
+<span style="display: none" id="second-view">
+        <div style="overflow: auto; height: 60vh">
+            <table  id="tblCart" class="table table-light table-hover" style="width: 80vw;font-size: 1.5em; margin:5vh 0 0 10vw;">
+                <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                        <th scope="col" style="width: 2vw">Bin</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyCart">
+                </tbody>
+            </table>
+        </div>
+        <div id="totalV" style="height: 5vh; width: 8vw; border-bottom:2px solid black; margin:2vh 0 0 79vw">
+            <h1 id="lblTotal"></h1>
+        </div>
+        <div style="margin:2vh 0 0 79vw">
+            <button id="myBtn" style="width: 8vw; height: 6vh; font-size: 1.7em" type="button"
+                    class="btn btn-primary">Check-Out</button>
+        </div>
 
-    <script>
+        <div id="myModal" class="modal">
+            <div class="modal-content" style="font-size: 1.6em; margin:5vh 5vw 0 5vw; width: 80vw; border-radius: 20px">
+                <span class="close">&times;</span>
+                <h1 style="margin-left: 30vw">CheckOut The Cart </h1>
+                <h3 style="margin: 5vh 0 2vh 2vh"><b>Customer Name</b> : Nimal Kumara</h3>
+                <h3 style="margin: 2vh"><b>Customer Tel</b> : 0781728119</h3>
+                <h3 style="margin: 2vh"><b>Customer Mail</b> : Nimal@gmail.com</h3>
+                <h3 style="margin: 2vh"><b>Total Items</b> : 8</h3>
+                <h3 style="margin: 2vh"><b>Total Amount </b> : 12000.00</h3>
+                <button type="button" style="margin: 5vh 0 0 65vw; width: 12vw; height: 6vh; font-size: 1.2em"
+                        class="btn btn-primary">
+                    Confirm Pay
+                </button>
+            </div>
+        </div>
 
+    </span>
+
+<script>
+
+        function cartButtonClicked(event){
+            event.preventDefault();
+            $("#first-view").css("display", "none");
+            $("#second-view").css("display", "block");
+        }
 
         var medicineArray = new Array();
         <c:forEach items="${itemsLP}" var="item">
@@ -276,8 +324,11 @@
             u.name= '${item.itemName}';
             u.price= '${item.price}'
             u.description= '${item.description}'
+            u.expireDate= '${item.expireDate}'
             medicineArray.push(u);
         </c:forEach>
+
+        y();
 
         function y() {
             medicineArray.forEach((z) => {
@@ -285,6 +336,7 @@
                 console.log("itemName : "+z.name);
                 console.log("itemPrice : "+z.price);
                 console.log("itemDescription : "+z.description);
+                console.log("itemDescription : "+z.expireDate);
 
                 $('#tblDrugs').append(
                     `<tr>
@@ -292,13 +344,26 @@
                         <td> \${z.name}</td>
                         <td> \${z.description}</td>
                         <td> \${z.price}</td>
+                        <td> \${z.expireDate}</td>
+                        <td>
+                            <button  value=\${z.code} style="border: none; background-color: #219ebc; color: white" id="sasa" onclick="btnClicked(event);">
+                                ADD
+                            </button>
+                        </td>
                     </tr>`
                 )
             })
         }
 
+        var cart = new Array();
         function btnClicked(event) {
-                console.log(typeof event.target.value);
+            console.log(typeof event.target.value);
+            const selectedItemID = event.target.value;
+            medicineArray.forEach((t) => {
+                if(t.code === selectedItemID){
+                    cart.push(t);
+                }
+            })
         }
 
         function searchClicked() {
