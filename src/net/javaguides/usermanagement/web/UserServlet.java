@@ -2,6 +2,7 @@ package net.javaguides.usermanagement.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,8 +17,10 @@ import javax.sql.DataSource;
 
 import net.javaguides.usermanagement.bo.BOFactory;
 import net.javaguides.usermanagement.bo.SuperBo;
+import net.javaguides.usermanagement.bo.custom.ItemBo;
 import net.javaguides.usermanagement.bo.custom.PatientBo;
 import net.javaguides.usermanagement.dao.UserDAO;
+import net.javaguides.usermanagement.model.Item;
 import net.javaguides.usermanagement.model.Patient;
 import net.javaguides.usermanagement.model.User;
 import net.javaguides.usermanagement.util.GenerateUserID;
@@ -36,6 +39,7 @@ public class UserServlet extends HttpServlet {
 	@Resource(name = "java:comp/env/jdbc/pool")
 	public  static DataSource dataSource;
 	PatientBo patientBo = (PatientBo) BOFactory.getBoFactory().getBo(BOFactory.BOTypes.PATIENT);
+	ItemBo itemBo = (ItemBo) BOFactory.getBoFactory().getBo(BOFactory.BOTypes.ITEM);
 
 	public void init() {
 		userDAO = new UserDAO();
@@ -53,8 +57,10 @@ public class UserServlet extends HttpServlet {
 					try {
 						Patient patient = patientBo.checkLogin(username, password);
 						if(patient != null) {
+							ArrayList<Item> all = itemBo.getAll();
 							RequestDispatcher dispatcher = request.getRequestDispatcher("Dashboard.jsp");
 							request.setAttribute("user", patient);
+							request.setAttribute("itemsLP",all);
 							dispatcher.forward(request, response);
 						}else {
 							RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");

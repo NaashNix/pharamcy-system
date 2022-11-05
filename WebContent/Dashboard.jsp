@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="net.javaguides.usermanagement.model.User" %>
+<%@ page import="net.javaguides.usermanagement.model.Item" %>
 <%--
   Created by IntelliJ IDEA.
   User: naashnix
@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>Title</title>
+    <script src="lib/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <!-- CSS only -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -21,7 +22,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-    <script src="lib/jquery-3.6.0.min.js"></script>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -248,64 +248,30 @@
                             <th scope="col">Item Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Unit Price</th>
-                            <th scope="col">Availability</th>
                             <th scope="col">Expire Date</th>
                             <th scope="col" style="width: 2vw">Cart</th>
                         </tr>
                     </thead>
+
                     <tbody id="tBodyDrugs">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Panadol</td>
-                            <td>2mg </td>
-                            <td>8</td>
-                            <td>2</td>
-                            <td>16</td>
+					<!--   for (Todo todo: todos) {  -->
+					<c:forEach var="item" items="${itemsLP}">
+
+						<tr>
+							<td><c:out value="${item.itemCode}" /></td>
+							<td><c:out value="${item.itemName}" /></td>
+							<td><c:out value="${item.description}" /></td>
+							<td><c:out value="${item.price}" /></td>
+							<td><c:out value="${item.expireDate}" /></td>
                             <td>
-                                <button style="border: none">
-                                    <i class="bi bi-bag-check"></i>
+                                <button  value="${item.itemCode}" style="border: none; background-color: #219ebc; color: white" id="sasa" onclick="btnClicked(event);">
+                                   ADD
                                 </button>
                             </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Panadol</td>
-                            <td>2mg </td>
-                            <td>8</td>
-                            <td>2</td>
-                            <td>16</td>
-                            <td>
-                                <button style="border: none">
-                                    <i class="bi bi-bag-check"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Panadol</td>
-                            <td>2mg </td>
-                            <td>8</td>
-                            <td>2</td>
-                            <td>16</td>
-                            <td>
-                                <button style="border: none">
-                                    <i class="bi bi-bag-check"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Panadol</td>
-                            <td>2mg </td>
-                            <td>8</td>
-                            <td>2</td>
-                            <td>16</td>
-                            <td>
-                                <button style="border: none">
-                                    <i class="bi bi-bag-check"></i>
-                                </button>
-                            </td>
-                        </tr>
+						</tr>
+                            MATH KADETA GIHIN ENNAM WINADI 5K DENNA
+                    </c:forEach>
+                    <!-- } -->
                     </tbody>
                 </table>
             </div>
@@ -314,46 +280,11 @@
     </span>
 
     <script>
-        $(document).keydown(function(objEvent) {
-            if (objEvent.keyCode === 9) {  //tab pressed
-                objEvent.preventDefault(); // stops its action
-            }
-        });
 
-        /* ================== Home Page JS ==================== */
+        function btnClicked(event) {
 
-        $("#btnCheckMedical").click(function() {
-            searchDrug($("#txtMedicalDesc").val());
-        });
-
-
-        /* ================== History Page JS ==================== */
-
-        $("#btnSearchHistory").click(function() {
-            searchDrug($("#txtTranscriptCode").val());
-        });
-
-        /* ================== CheckOut Pop-up ================= */
-
-        var modal = document.getElementById("myModal");
-
-        var btn = document.getElementById("myBtn");
-
-        var span = document.getElementsByClassName("close")[0];
-
-        btn.onclick = function() {
-            modal.style.display = "block";
-        };
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        };
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
         }
+
 
     </script>
 </body>

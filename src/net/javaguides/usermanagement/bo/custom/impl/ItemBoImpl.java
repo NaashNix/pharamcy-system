@@ -86,7 +86,7 @@ public class ItemBoImpl implements ItemBo {
     public ArrayList<Item> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Item> itemArrayList = new ArrayList<>();
         Connection connection = UserServlet.dataSource.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM item ");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Item ");
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()){
