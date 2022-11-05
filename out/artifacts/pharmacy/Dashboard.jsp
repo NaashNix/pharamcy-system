@@ -264,6 +264,7 @@
 
         </div>
     </span>
+
 <span style="display: none" id="second-view">
         <div style="overflow: auto; height: 60vh">
             <table  id="tblCart" class="table table-light table-hover" style="width: 80vw;font-size: 1.5em; margin:5vh 0 0 10vw;">
@@ -275,14 +276,14 @@
                         <th scope="col">Unit Price</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Total</th>
-                        <th scope="col" style="width: 2vw">Bin</th>
+                        <th scope="col" style="width: 2vw">Remove</th>
                     </tr>
                 </thead>
                 <tbody id="bodyCart">
                 </tbody>
             </table>
         </div>
-        <div id="totalV" style="height: 5vh; width: 8vw; border-bottom:2px solid black; margin:2vh 0 0 79vw">
+        <div id="totalV" style="height: 5vh; width: 15vw; text-align: end; border-bottom:2px solid black; margin:2vh 0 0 79vw">
             <h1 id="lblTotal"></h1>
         </div>
         <div style="margin:2vh 0 0 79vw">
@@ -314,6 +315,38 @@
             event.preventDefault();
             $("#first-view").css("display", "none");
             $("#second-view").css("display", "block");
+
+            viewCart();
+
+        }
+
+        function viewCart(){
+
+            let total = 0;
+
+            cart.forEach((d) => {
+
+                var price = Number(d.price);
+                total=total+price;
+
+            $('#tblCart').append(
+                `<tr>
+                        <td> \${d.code}</td>
+                        <td> \${d.name}</td>
+                        <td> \${d.description}</td>
+                        <td> \${d.price} </td>
+                        <td> 1 </td>
+                        <td> \${d.price} </td>
+                        <td>
+                            <button  value=\${d.code} style="border: none; background-color: #219ebc; color: white" id="nope" onclick="btnClicked(event);">
+                                DELETE
+                            </button>
+                        </td>
+                    </tr>`
+            )});
+
+            let lblTotal = document.getElementById("lblTotal");
+            lblTotal.innerText = "Rs. "+total+" .00";
         }
 
         var medicineArray = new Array();
@@ -382,6 +415,12 @@
                                         <td> \${x.name}</td>
                                         <td> \${x.description}</td>
                                         <td> \${x.price}</td>
+                                        <td> \${z.expireDate}</td>
+                                        <td>
+                                            <button  value=\${x.code} style="border: none; background-color: #219ebc; color: white" id="sasa" onclick="btnClicked(event);">
+                                                ADD
+                                            </button>
+                                        </td>
                                     </tr>`
                                 )
                     }
