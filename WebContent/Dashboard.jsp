@@ -115,10 +115,8 @@
             color: #000;
             text-decoration: none;
             cursor: pointer;
-        }body, html {
-             /*height: 100%;*/
+        }
 
-         }
         input[type=text] {
             width: 300px;
             font-size: 16px;
@@ -287,12 +285,12 @@
             <h1 id="lblTotal"></h1>
         </div>
         <div style="margin:2vh 0 0 79vw">
-            <button id="myBtn" style="width: 8vw; height: 6vh; font-size: 1.7em" type="button"
+            <button onclick="proceedPayButtonClicked()" id="myBtn" style="width: 8vw; height: 6vh; font-size: 1.7em" type="button"
                     class="btn btn-primary">Check-Out</button>
         </div>
 
         <div id="myModal" class="modal">
-            <div class="modal-content" style="font-size: 1.6em; margin:5vh 5vw 0 5vw; width: 80vw; border-radius: 20px">
+            <div  id="modalContentDiv" class="modal-content" style="font-size: 1.6em; margin:5vh 5vw 0 5vw; width: 80vw; border-radius: 20px">
                 <span class="close">&times;</span>
                 <h1 style="margin-left: 30vw">CheckOut The Cart </h1>
                 <h3 style="margin: 5vh 0 2vh 2vh"><b>Customer Name</b> : Nimal Kumara</h3>
@@ -300,7 +298,7 @@
                 <h3 style="margin: 2vh"><b>Customer Mail</b> : Nimal@gmail.com</h3>
                 <h3 style="margin: 2vh"><b>Total Items</b> : 8</h3>
                 <h3 style="margin: 2vh"><b>Total Amount </b> : 12000.00</h3>
-                <button type="button" style="margin: 5vh 0 0 65vw; width: 12vw; height: 6vh; font-size: 1.2em"
+                <button onclick="proceedPayButtonClicked()" type="button" style="margin: 5vh 0 0 65vw; width: 12vw; height: 6vh; font-size: 1.2em"
                         class="btn btn-primary">
                     Confirm Pay
                 </button>
@@ -362,6 +360,18 @@
         </c:forEach>
 
         y();
+
+        function proceedPayButtonClicked(){
+            const modal = document.getElementById("myModal");
+            modal.style.display = "block";
+            const modalContentDiv = document.getElementById("modalContentDiv");
+
+            modalContentDiv.append(
+
+            );
+
+
+        }
 
         function y() {
             medicineArray.forEach((z) => {
@@ -429,6 +439,7 @@
 
 
         }
+
 
     </script>
 </body>
