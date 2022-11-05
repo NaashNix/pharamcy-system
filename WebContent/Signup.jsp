@@ -160,19 +160,19 @@
             <div class="sDualInputGroup marginTop">
                 <fieldset class="mb-3 mlCustom" style="width: 45%;">
                     <label for="firstNameField" class="form-label fontFace">First Name</label>
-                    <input  value="<c:out value='${user.firstName}' />"
+                    <input required  value="<c:out value='${user.firstName}' />"
                            name="firstName" type="text" class="form-control" id="firstNameField" placeholder="Dewmini">
                 </fieldset>
                 <fieldset class="mb-3" style="width: 45%;">
                     <label for="secondNameField" class="form-label fontFace">Second Name</label>
-                    <input value="<c:out value='${user.secondName}' />"
-                           name="secondNumber" type="text" class="form-control" id="secondNameField" placeholder="Wangathunga">
+                    <input required value="<c:out value='${user.secondName}' />"
+                           name="secondName" type="text" class="form-control" id="secondNameField" placeholder="Silva">
                 </fieldset>
             </div>
             <div class="sDualInputGroup marginTop">
                 <fieldset class="mb-3 mlCustom">
                     <label for="nicNumberField" class="form-label fontFace">NIC Number</label>
-                    <input value="<c:out value='${user.nicNumber}' />"
+                    <input required value="<c:out value='${user.nicNumber}' />"
                            name="nicNumber" type="text" class="form-control" id="nicNumberField" placeholder="000000000000">
                 </fieldset>
 
@@ -185,26 +185,26 @@
 
             <fieldset class="mb-3 marginTop">
                 <label for="addressField" class="form-label fontFace">Residential Address</label>
-                <input value="<c:out value='${user.address}' />"
+                <input required value="<c:out value='${user.address}' />"
                        name="address" type="text" class="form-control" id="addressField" placeholder="No. 51, Galle Road, Panadura">
             </fieldset>
 
             <fieldset class="mb-3">
                 <label for="emailField" class="form-label fontFace">Email Address</label>
-                <input value="<c:out value='${user.email}' />"
+                <input required value="<c:out value='${user.email}' />"
                        name="email" type="email" class="form-control" id="emailField" placeholder="JohnSilva@mail.com">
             </fieldset>
 
             <div class="sDualInputGroup marginTop">
                 <fieldset class="mb-3 mlCustom">
                     <label for="usernameField" class="form-label fontFace">Username</label>
-                    <input value="<c:out value='${user.username}' />"
+                    <input required value="<c:out value='${user.username}' />"
                            name="username" type="text" class="form-control" id="usernameField" placeholder="At least 4 characters.">
                 </fieldset>
 
                 <fieldset class="mb-3 marginTop">
                     <label for="passwordField" class="form-label fontFace">Password</label>
-                    <input value="<c:out value='${user.password}' />"
+                    <input required value="<c:out value='${user.password}' />"
                            name="password" type="password" class="form-control" id="passwordField" placeholder="">
                 </fieldset>
             </div>
