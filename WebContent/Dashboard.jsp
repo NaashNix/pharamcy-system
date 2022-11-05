@@ -222,7 +222,7 @@
         <div class="bg-text"
              style="border-radius: 20px; position: absolute; top: 14%; left: 0; right: 0; margin: auto;">
             <h1 style="padding-bottom: 20px">THE P&S DRUG STORE</h1>
-            <form method="post" action="/search" style="display: flex; flex-direction: row; justify-content: center">
+            <form method="post" action="/order/search" style="display: flex; flex-direction: row; justify-content: center">
                 <fieldset style="margin-right: 1rem">
                 <input class="searchField"
                        required

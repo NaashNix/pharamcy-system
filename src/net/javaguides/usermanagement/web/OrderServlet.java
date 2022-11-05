@@ -16,9 +16,9 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String servletPath = request.getServletPath();
+        String option = request.getServletPath();
 
-        switch (servletPath){
+        switch (option){
             case "/search" : {
                 String name = request.getParameter("searchedName");
                 System.out.println("Servlet Path Called");
