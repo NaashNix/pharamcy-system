@@ -3,6 +3,7 @@ package net.javaguides.usermanagement.bo.custom.impl;
 
 import net.javaguides.usermanagement.bo.custom.ItemBo;
 import net.javaguides.usermanagement.model.Item;
+import net.javaguides.usermanagement.web.OrderServlet;
 import net.javaguides.usermanagement.web.UserServlet;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ public class ItemBoImpl implements ItemBo {
     @Override
     public boolean add(Item item) throws SQLException, ClassNotFoundException {
 
-        Connection connection = UserServlet.dataSource.getConnection();
+        Connection connection = OrderServlet.dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Item VALUES (?,?,?,?,?,?,?,?)");
         preparedStatement.setObject(1,item.getItemCode());
         preparedStatement.setObject(2,item.getItemName());
@@ -109,7 +110,7 @@ public class ItemBoImpl implements ItemBo {
 
     @Override
     public ArrayList<String> getAllItemId() throws SQLException {
-        Connection connection = UserServlet.dataSource.getConnection();
+        Connection connection = OrderServlet.dataSource.getConnection();
         ArrayList<String> stringArrayList = new ArrayList<>();
 
         PreparedStatement preparedStatement =
