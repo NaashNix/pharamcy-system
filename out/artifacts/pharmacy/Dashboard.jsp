@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="net.javaguides.usermanagement.model.Item" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
   Created by IntelliJ IDEA.
   User: naashnix
@@ -11,7 +13,7 @@
 <html>
 <head>
     <title>Title</title>
-    <script src="lib/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <!-- CSS only -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -226,12 +228,13 @@
                 <fieldset style="margin-right: 1rem">
                 <input class="searchField"
                        required
+                       id="searchField"
                        value="<c:out value='${item.itemName}' />"
                        name="itemName"
                        placeholder="Start Searching!"
                 />
                 </fieldset>
-                <button class="searchButton" type="submit">
+                <button class="searchButton" type="button" onclick="searchClicked()">
                     Search
                 </button>
             </form>
@@ -254,24 +257,7 @@
                     </thead>
 
                     <tbody id="tBodyDrugs">
-					<!--   for (Todo todo: todos) {  -->
-					<c:forEach var="item" items="${itemsLP}">
 
-						<tr>
-							<td><c:out value="${item.itemCode}" /></td>
-							<td><c:out value="${item.itemName}" /></td>
-							<td><c:out value="${item.description}" /></td>
-							<td><c:out value="${item.price}" /></td>
-							<td><c:out value="${item.expireDate}" /></td>
-                            <td>
-                                <button value="${item.itemCode}" style="border: none" id="sasa" onclick="btnClicked(event);">
-                                   cart
-                                </button>
-                            </td>
-						</tr>
-
-                    </c:forEach>
-                    <!-- } -->
                     </tbody>
                 </table>
             </div>
@@ -281,12 +267,64 @@
 
     <script>
 
-        function btnClicked(event) {
 
-            event.preventDefault();
-            console.log(event.target.value);
+        var medicineArray = new Array();
+        <c:forEach items="${itemsLP}" var="item">
+            var u = new Object();
+        //name property example
+            u.code= '${item.itemCode}';
+            u.name= '${item.itemName}';
+            u.price= '${item.price}'
+            u.description= '${item.description}'
+            medicineArray.push(u);
+        </c:forEach>
+
+        function y() {
+            medicineArray.forEach((z) => {
+                console.log("itemCode : "+z.code);
+                console.log("itemName : "+z.name);
+                console.log("itemPrice : "+z.price);
+                console.log("itemDescription : "+z.description);
+
+                $('#tblDrugs').append(
+                    `<tr>
+                        <td>\${z.code}</td>
+                        <td> \${z.name}</td>
+                        <td> \${z.description}</td>
+                        <td> \${z.price}</td>
+                    </tr>`
+                )
+            })
         }
 
+        function btnClicked(event) {
+                console.log(typeof event.target.value);
+        }
+
+        function searchClicked() {
+            let searchField = $("#searchField");
+            console.log("SearchClicked!"+searchField.val());
+            if(searchField.val() === ''){
+                alert("Empty Search Field!");
+            }else {
+
+                medicineArray.forEach((x) => {
+                    if(x.code === searchField.val()){
+                                $("#tBodyDrugs tr").remove();
+                                $("#tBodyDrugs").append(
+                                    `<tr>
+                                        <td> \${x.code}</td>
+                                        <td> \${x.name}</td>
+                                        <td> \${x.description}</td>
+                                        <td> \${x.price}</td>
+                                    </tr>`
+                                )
+                    }
+                })
+            }
+
+
+        }
 
     </script>
 </body>

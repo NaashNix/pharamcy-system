@@ -10,6 +10,24 @@
 	<center>
 		<h1>Error</h1>
 		<h2><%=exception.getMessage() %><br/> </h2>
+		<!--   for (Todo todo: todos) {  -->
+		<c:forEach var="item" items="${itemsLP}">
+
+			<tr>
+				<td><c:out value="${item.itemCode}" /></td>
+				<td><c:out value="${item.itemName}" /></td>
+				<td><c:out value="${item.description}" /></td>
+				<td><c:out value="${item.price}" /></td>
+				<td><c:out value="${item.expireDate}" /></td>
+				<td>
+					<button  value="{${item.itemCode},${item.itemName}}"   style="border: none; background-color: #219ebc; color: white" id="sasa" onclick="btnClicked(event);">
+						ADD
+					</button>
+				</td>
+			</tr>
+
+		</c:forEach>
+		<!-- } -->
 	</center>	
 </body>
 </html>
