@@ -339,9 +339,8 @@
                 contentType: "application/json",
 
                 success:function (resp) {
-                    alert("SuccessFully added");
-                    console.log("order post success");
-
+                    console.log(resp);
+                    location.reload();
                 }
             });
 
@@ -351,10 +350,6 @@
 
         function getDateAndTime() {
             let dateAndTime =  new Date();
-            let hours = dateAndTime.getHours();
-            let min = dateAndTime.getMinutes();
-            let second  = dateAndTime.getSeconds();
-
             let day = dateAndTime.getDate();
             let month =  dateAndTime.getMonth();
             let year =  dateAndTime.getFullYear();
@@ -503,7 +498,7 @@
                                         <td> \${x.name}</td>
                                         <td> \${x.description}</td>
                                         <td> \${x.price}</td>
-                                        <td> \${z.expireDate}</td>
+                                        <td> \${x.expireDate}</td>
                                         <td>
                                             <button  value=\${x.code} style="border: none; background-color: #219ebc; color: white" id="sasa" onclick="btnClicked(event);">
                                                 ADD

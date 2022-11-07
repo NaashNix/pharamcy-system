@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
@@ -33,15 +34,10 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Request Received"); // Print
         response.setContentType("application/json");    //
-        System.out.println("Line 35 print");
         JsonReader reader = Json.createReader(request.getReader());
-        System.out.println("Line 37 print");
         JsonObject jsonObject = reader.readObject();
-        System.out.println("Line 39 print");
         String patientId = jsonObject.getString("customerId");
-        System.out.println("Line 41 : " + patientId);
         String orderId = null;
         try {
 
@@ -79,7 +75,15 @@ public class OrderServlet extends HttpServlet {
 
 
             boolean b = orderBo.addOrder(orders);
-
+            if(b){
+                PrintWriter writer = response.getWriter();
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status","OK");
+                writer.print(objectBuilder.build());
+            }else{
+                RequestDispatcher dispatcher = request.getRequestDispatcher("OrderPlaced.jsp");
+                dispatcher.forward(request,response);
+            }
 
 
         } catch (SQLException throwables) {
