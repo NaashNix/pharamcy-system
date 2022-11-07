@@ -291,14 +291,15 @@
 
         <div id="myModal" class="modal">
             <div  id="modalContentDiv" class="modal-content" style="font-size: 1.6em; margin:5vh 5vw 0 5vw; width: 80vw; border-radius: 20px">
-                <span class="close">&times;</span>
+                 <span class="close">&times;</span>
                 <h1 style="margin-left: 30vw">CheckOut The Cart </h1>
-                <h3 style="margin: 5vh 0 2vh 2vh"><b>Customer Name</b> : Nimal Kumara</h3>
-                <h3 style="margin: 2vh"><b>Customer Tel</b> : 0781728119</h3>
-                <h3 style="margin: 2vh"><b>Customer Mail</b> : Nimal@gmail.com</h3>
-                <h3 style="margin: 2vh"><b>Total Items</b> : 8</h3>
-                <h3 style="margin: 2vh"><b>Total Amount </b> : 12000.00</h3>
-                <button onclick="proceedPayButtonClicked()" type="button" style="margin: 5vh 0 0 65vw; width: 12vw; height: 6vh; font-size: 1.2em"
+                <h3 style="margin: 5vh 0 2vh 2vh"><b>Customer ID</b> : <span id="customerIdField" >${user.patientId}</span></h3>
+                <h3 style="margin: 5vh 0 2vh 2vh"><b>Customer Name</b> : ${user.firstName} ${user.secondName}</h3>
+                <h3 style="margin: 2vh"><b>Customer Address</b> : ${user.address}</h3>
+                <h3 style="margin: 2vh"><b>Customer Mail</b> : ${user.email}</h3>
+                <h3 style="margin: 2vh"><b>Total Items : </b><span id="totalItemsField" ></span></h3>
+                <h3 style="margin: 2vh"><b>Total Amount : </b><span id="totalAmountField" ></span></h3>
+                <button onclick="finalPayingButton()" type="button" style="margin: 5vh 0 0 65vw; width: 12vw; height: 6vh; font-size: 1.2em"
                         class="btn btn-primary">
                     Confirm Pay
                 </button>
@@ -308,6 +309,79 @@
     </span>
 
 <script>
+
+
+        function finalPayingButton() {
+            // here is the code for transaction to the store data to table.
+            createObject();
+            let orderId = "PENDING";
+            let customerIdField = document.getElementById("customerIdField");
+            let customerId = customerIdField.innerText;
+            let totalAmountField = document.getElementById("totalAmountField");
+            let totalAmount = totalAmountField.innerText;
+            let dateAndTime = getDateAndTime();
+            console.log("Customer ID : "+customerId);
+            let totalPriceString =  totalAmount.toString();
+
+            let jsonData  = JSON.stringify({
+                "orderId": orderId,
+                "customerId": customerId,
+                "total": totalPriceString,
+                "dateAndTime": dateAndTime,
+                "itemDetail": dataArray
+            });
+
+            $.ajax({
+                url: "http://localhost:8080/jsp-servlet-jdbc-mysql-crud-tutorial/order",
+                method: "POST",
+                dataType:'json',
+                data: jsonData,
+                contentType: "application/json",
+
+                success:function (resp) {
+                    alert("SuccessFully added");
+                    console.log("order post success");
+
+                }
+            });
+
+
+        }
+
+
+        function getDateAndTime() {
+            let dateAndTime =  new Date();
+            let hours = dateAndTime.getHours();
+            let min = dateAndTime.getMinutes();
+            let second  = dateAndTime.getSeconds();
+
+            let day = dateAndTime.getDate();
+            let month =  dateAndTime.getMonth();
+            let year =  dateAndTime.getFullYear();
+
+            let dateAndTime1 = year + "-" + month + "-" + day;
+
+            return  dateAndTime1;
+
+        }
+
+
+        const dataArray = [];
+        function createObject() {
+
+            for(let i=0; i < cart.length; i++){
+                const obj= {
+                    "itemCode": cart[i].code,
+                    "itemName": cart[i].name,
+                    "qty": 1,
+                    "unitPrice":cart[i].price,
+                    "description":cart[i].description
+                }
+
+                dataArray.push(obj);
+            }
+        }
+
 
         function cartButtonClicked(event){
             event.preventDefault();
@@ -364,12 +438,16 @@
         function proceedPayButtonClicked(){
             const modal = document.getElementById("myModal");
             modal.style.display = "block";
-            const modalContentDiv = document.getElementById("modalContentDiv");
+            let totalItemsField = document.getElementById("totalItemsField");
+            let totalAmountField = document.getElementById("totalAmountField");
 
-            modalContentDiv.append(
+            let total = 0;
+            cart.forEach((h) => {
+                total = total + parseInt(h.price);
+            });
 
-            );
-
+            totalItemsField.innerText = total;
+            totalAmountField.innerText = cart.length;
 
         }
 

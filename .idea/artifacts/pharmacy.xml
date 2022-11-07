@@ -8,9 +8,11 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib" />
+          <element id="library" level="project" name="JavaEE" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="jsp-servlet-jdbc-mysql-crud-tutorial/web/Web" />
+      <element id="javaee-facet-resources" facet="jsp-servlet-jdbc-mysql-crud-tutorial/web/Web2" />
     </root>
   </artifact>
 </component>

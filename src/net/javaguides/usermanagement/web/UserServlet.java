@@ -66,10 +66,12 @@ public class UserServlet extends HttpServlet {
 							RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
 							request.setAttribute("errorMessage","display:block !important;");
 							dispatcher.forward(request,response);
+
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case "/newSignUp" :
 					String firstName = request.getParameter("firstName");

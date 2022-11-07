@@ -2,8 +2,11 @@ package net.javaguides.usermanagement.web;
 
 import net.javaguides.usermanagement.bo.BOFactory;
 import net.javaguides.usermanagement.bo.custom.ItemBo;
+import net.javaguides.usermanagement.bo.custom.OrderBo;
 import net.javaguides.usermanagement.bo.custom.PatientBo;
 import net.javaguides.usermanagement.model.Item;
+import net.javaguides.usermanagement.model.OrderDetail;
+import net.javaguides.usermanagement.model.Orders;
 import net.javaguides.usermanagement.model.User;
 
 import javax.annotation.Resource;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -23,24 +27,62 @@ import java.util.*;
 public class OrderServlet extends HttpServlet {
 
     @Resource(name = "java:comp/env/jdbc/pool")
-    public  static DataSource dataSource;
+    public static DataSource dataSource;
     ItemBo itemBo = (ItemBo) BOFactory.getBoFactory().getBo(BOFactory.BOTypes.ITEM);
+    OrderBo orderBo = (OrderBo) BOFactory.getBoFactory().getBo(BOFactory.BOTypes.ORDER);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        System.out.println("Order Servlet POST request");
-        String searchedName = request.getParameter("itemName");
-        System.out.println(searchedName);
+        System.out.println("Request Received"); // Print
+        response.setContentType("application/json");    //
+        System.out.println("Line 35 print");
+        JsonReader reader = Json.createReader(request.getReader());
+        System.out.println("Line 37 print");
+        JsonObject jsonObject = reader.readObject();
+        System.out.println("Line 39 print");
+        String patientId = jsonObject.getString("customerId");
+        System.out.println("Line 41 : " + patientId);
+        String orderId = null;
         try {
 
-            Item item = itemBo.search(searchedName);
+            orderId = orderBo.nextId();
 
-            if(item != null){
+            String receivingDate =jsonObject.getString("dateAndTime");
+            Date orderDate = Date.valueOf(receivingDate);
 
+            double orderTotal = Double.parseDouble(jsonObject.getString("total"));
+            JsonArray itemDetails = jsonObject.getJsonArray("itemDetail");
+
+            ArrayList<OrderDetail> orderDetails = new ArrayList<>();
+            for (JsonValue jsonValue : itemDetails) {
+
+                String itemCode = jsonValue.asJsonObject().getString("itemCode");
+                int quantity = jsonValue.asJsonObject().getInt("qty");
+                String price = jsonValue.asJsonObject().getString("unitPrice");
+
+                orderDetails.add(new OrderDetail(
+                        orderId,
+                        itemCode,
+                        Double.parseDouble(String.valueOf(quantity)),
+                        Double.parseDouble(price)
+                ));
             }
 
-        } catch (SQLException | ClassNotFoundException throwables) {
+            System.out.println(orderDetails.size());
+            Orders orders = new Orders(
+                    orderId,
+                    orderDate,
+                    orderTotal,
+                    patientId,
+                    orderDetails
+            );
+
+
+            boolean b = orderBo.addOrder(orders);
+
+
+
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
@@ -56,7 +98,7 @@ public class OrderServlet extends HttpServlet {
         }
         req.setAttribute("items", all);
         RequestDispatcher dispatcher = req.getRequestDispatcher("Dashboard.jsp");
-        dispatcher.forward(req,resp);
+        dispatcher.forward(req, resp);
     }
 }
 
