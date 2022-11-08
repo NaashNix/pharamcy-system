@@ -98,6 +98,7 @@ public class PatientBoImpl implements PatientBo {
     public Patient search(String s) throws SQLException, ClassNotFoundException {
         Connection connection = UserServlet.dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Patient WHERE patientId =? ");
+        System.out.println("Patient ID in PatientBoImpl : "+s);
         preparedStatement.setObject(1,s);
         ResultSet resultSet = preparedStatement.executeQuery();
 

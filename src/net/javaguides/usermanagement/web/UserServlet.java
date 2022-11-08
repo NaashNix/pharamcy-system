@@ -144,7 +144,7 @@ public class UserServlet extends HttpServlet {
 				listUser(request, response);
 				break;
 			}
-		} catch (SQLException ex) {
+		} catch (SQLException | ClassNotFoundException ex) {
 			throw new ServletException(ex);
 		}
 	}
@@ -168,20 +168,26 @@ public class UserServlet extends HttpServlet {
 	private void getPatientDetails(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException, ClassNotFoundException {
 		String patientId = request.getParameter("patientId");
+		System.out.println("patientId : "+patientId);
 		Patient searchedPatient = patientBo.search(patientId);
+		System.out.println("searchedPatient : "+searchedPatient);
+		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 		if(searchedPatient != null){
-			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("status","OK");
 			objectBuilder.add("patientId",searchedPatient.getPatientId());
 			objectBuilder.add("firstName",searchedPatient.getFirstName());
-			objectBuilder.add("patientId",searchedPatient.getSecondName());
-			objectBuilder.add("patientId",searchedPatient.getIdNumber());
-			objectBuilder.add("patientId",searchedPatient.getUserName());
-			objectBuilder.add("patientId",searchedPatient.getPassword());
-			objectBuilder.add("patientId",searchedPatient.getEmail());
+			objectBuilder.add("secondName",searchedPatient.getSecondName());
+			objectBuilder.add("idNumber",searchedPatient.getIdNumber());
+			objectBuilder.add("username",searchedPatient.getUserName());
+			objectBuilder.add("password",searchedPatient.getPassword());
+			objectBuilder.add("email",searchedPatient.getEmail());
 			objectBuilder.add("birthday",searchedPatient.getBirthday());
+			PrintWriter writer = response.getWriter();
+			writer.print(objectBuilder.build());
+		}else{
+			objectBuilder.add("status","FAILED");
+			response.getWriter().print(objectBuilder.build());
 		}
-		PrintWriter writer = response.getWriter();
-		writer.print();
 
 	}
 

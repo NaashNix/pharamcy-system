@@ -22,16 +22,12 @@
         let stringUserId = userId.innerText;
 
         $.ajax({
-            url:  'http://localhost:8080/jsp-servlet-jdbc-mysql-crud-tutorial/details?patientId=P003',
+            url:  'http://localhost:8080/jsp-servlet-jdbc-mysql-crud-tutorial/details?patientId='+stringUserId,
             method: "GET",
             contentType: "application/json",
 
             success:function (resp) {
-                if(resp.status === 'OK'){
-                    console.log(res.data)
-                }else {
-                    alert("Order Failed!");
-                }
+                console.log(resp)
             }
         });
     }
