@@ -207,7 +207,7 @@
          </span>
 
     <div style="display: flex; align-items: center; height: 100%;" >
-        <a href="" class="menuLink">Order History</a>
+        <a href="<%=request.getContextPath()%>/update?patientId=${user.patientId}" class="menuLink">Update Profile</a>
         <a href="" class="menuLink">Logout</a>
 
         <a style="height: 80%;" onclick="cartButtonClicked(event)">
@@ -339,8 +339,14 @@
                 contentType: "application/json",
 
                 success:function (resp) {
-                    console.log(resp);
+                    if(resp.status === 'OK'){
+                        alert("Order Placed Successfully.");
+                    }else {
+                        alert("Order Failed!");
+                    }
+
                     location.reload();
+
                 }
             });
 
@@ -441,8 +447,8 @@
                 total = total + parseInt(h.price);
             });
 
-            totalItemsField.innerText = total;
-            totalAmountField.innerText = cart.length;
+            totalItemsField.innerText = cart.length;
+            totalAmountField.innerText = total;
 
         }
 

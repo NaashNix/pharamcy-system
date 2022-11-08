@@ -42,7 +42,7 @@ public class OrderServlet extends HttpServlet {
         try {
 
             orderId = orderBo.nextId();
-
+            // 10-05-2022
             String receivingDate =jsonObject.getString("dateAndTime");
             Date orderDate = Date.valueOf(receivingDate);
 

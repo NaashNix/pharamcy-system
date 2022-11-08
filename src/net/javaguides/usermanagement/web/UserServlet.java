@@ -1,11 +1,14 @@
 package net.javaguides.usermanagement.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.GenericServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -113,11 +116,11 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getServletPath();
-
+		System.out.println("Action in line 116"+action);
 		try {
 			switch (action) {
-			case "/new":
-				showNewForm(request, response);
+			case "/details":
+				getPatientDetails(request, response);
 				break;
 			case "/insert":
 				insertUser(request, response);
@@ -162,10 +165,24 @@ public class UserServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
-		dispatcher.forward(request, response);
+	private void getPatientDetails(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException, ClassNotFoundException {
+		String patientId = request.getParameter("patientId");
+		Patient searchedPatient = patientBo.search(patientId);
+		if(searchedPatient != null){
+			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("patientId",searchedPatient.getPatientId());
+			objectBuilder.add("firstName",searchedPatient.getFirstName());
+			objectBuilder.add("patientId",searchedPatient.getSecondName());
+			objectBuilder.add("patientId",searchedPatient.getIdNumber());
+			objectBuilder.add("patientId",searchedPatient.getUserName());
+			objectBuilder.add("patientId",searchedPatient.getPassword());
+			objectBuilder.add("patientId",searchedPatient.getEmail());
+			objectBuilder.add("birthday",searchedPatient.getBirthday());
+		}
+		PrintWriter writer = response.getWriter();
+		writer.print();
+
 	}
 
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -188,16 +205,12 @@ public class UserServlet extends HttpServlet {
 		response.sendRedirect("list");
 	}
 
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String country = request.getParameter("country");
-
-		User book = new User(id, name, email, country);
-		userDAO.updateUser(book);
-		response.sendRedirect("list");
+	private void updateUser(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		System.out.println("Request Came to the update User.");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("UpdateProfile.jsp");
+		request.setAttribute("user",request.getParameter("patientId"));
+		dispatcher.forward(request,response);
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) 
