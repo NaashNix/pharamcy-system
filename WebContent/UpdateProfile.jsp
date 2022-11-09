@@ -353,6 +353,7 @@
 
                 success: function (resp) {
                     alert("update success");
+                    location.reload();
                 }
             });
 

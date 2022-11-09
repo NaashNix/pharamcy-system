@@ -483,6 +483,8 @@
             const selectedItemID = event.target.value;
             medicineArray.forEach((t) => {
                 if(t.code === selectedItemID){
+                    alert(t.name+" added to the cart!");
+                    console.log(t);
                     cart.push(t);
                 }
             })
