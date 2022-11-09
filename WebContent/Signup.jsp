@@ -270,15 +270,6 @@
 
     emailField.keyup(() => {
         nameInputValidation(emailField, re);
-        /* if(!emailField.val().includes('@')) {
-           emailField.css('border', '2px solid red');
-           emailField.css('margin', '-1px');
-           validationState = false;
-        } else {
-           emailField.css('border', '1px solid #ced4da');
-           emailField.css('margin', '0px');
-           validationState = true;
-        } */
 
     });
 

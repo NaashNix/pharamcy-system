@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.servlet.GenericServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,6 +48,58 @@ public class UserServlet extends HttpServlet {
 
 	public void init() {
 		userDAO = new UserDAO();
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("application/json");
+		System.out.println("put request eka awa");
+		JsonReader reader = Json.createReader(req.getReader());
+		JsonObject jsonObject = reader.readObject();
+
+		System.out.println(  jsonObject.getString("firstName"));
+		System.out.println(  jsonObject.getString("userName"));
+		System.out.println(  jsonObject.getString("secondName"));
+		System.out.println(  jsonObject.getString("idNumber"));
+		System.out.println(  jsonObject.getString("password"));
+		System.out.println(  jsonObject.getString("email"));
+		System.out.println(  jsonObject.getString("address"));
+		System.out.println(  jsonObject.getString("birthday"));
+
+		try {
+			boolean update = patientBo.update(
+					new Patient(
+						jsonObject.getString("patientId"),
+						jsonObject.getString("firstName"),
+						jsonObject.getString("userName"),
+						jsonObject.getString("secondName"),
+						jsonObject.getString("idNumber"),
+						jsonObject.getString("password"),
+						jsonObject.getString("email"),
+						jsonObject.getString("address"),
+						jsonObject.getString("birthday")
+					)
+			);
+
+
+
+			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			PrintWriter writer = resp.getWriter();
+			if(update){
+				objectBuilder.add("data", "");
+				objectBuilder.add("message", "Update Successfully !!");
+				objectBuilder.add("status", "200");
+				writer.print(objectBuilder.build());
+			}else{
+				objectBuilder.add("data", "");
+				objectBuilder.add("message", "update Not Successfully added!!");
+				objectBuilder.add("status", "500");
+				writer.print(objectBuilder.build());
+			}
+
+		} catch (SQLException | ClassNotFoundException throwables) {
+			throwables.printStackTrace();
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
@@ -182,6 +236,7 @@ public class UserServlet extends HttpServlet {
 			objectBuilder.add("password",searchedPatient.getPassword());
 			objectBuilder.add("email",searchedPatient.getEmail());
 			objectBuilder.add("birthday",searchedPatient.getBirthday());
+			objectBuilder.add("address",searchedPatient.getAddress());
 			PrintWriter writer = response.getWriter();
 			writer.print(objectBuilder.build());
 		}else{

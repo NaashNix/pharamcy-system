@@ -193,7 +193,7 @@
 
             <fieldset class="mb-3">
                 <label for="emailField" class="form-label fontFace">Email Address</label>
-                <input required value="<c:out value='${updatedUseruser.email}' />"
+                <input required value="<c:out value='${updatedUser.email}' />"
                        name="email" type="email" class="form-control" id="emailField" placeholder="JohnSilva@mail.com">
             </fieldset>
 
@@ -211,13 +211,157 @@
                 </fieldset>
             </div>
             <div class="sSubmitButtonParent marginTop">
-                <button class="btn sBtn1" type="submit" >Signup</button>
+                <button class="btn sBtn1" type="button" onclick="updateDetails()" >Update</button>
                 <button class="btn sBtn2" type="reset" >Cancel</button>
             </div>
         </form>
     </div>
 </div>
 <script>
+
+    let validationState = false;
+
+    const firstNameField = $("#firstNameField");
+    const secondNameField = $("#secondNameField");
+    const nicNumberField = $("#nicNumberField");
+    const addressField = $("#addressField");
+    const emailField = $("#emailField");
+    const birthdayFiled = $("#birthdayField");
+    const passwordFiled = $("#passwordField");
+    const  usernameField = $("#usernameField");
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const fieldsArray = [firstNameField,secondNameField,nicNumberField,addressField,
+        emailField, birthdayFiled, passwordFiled, usernameField];
+
+
+    function nameInputValidation(name, regex) {
+        if (!name.val().match(regex)) {
+            name.css('border', '2px solid red');
+            name.css('margin', '-1px');
+            validationState = false;
+        } else {
+            name.css('border', '1px solid #ced4da');
+            name.css('margin', '0px');
+            validationState = true;
+        }
+    }
+
+    function checkEmptyState(field) {
+
+        let result = false;
+
+        field.forEach((singleField) => {
+            if (singleField.val() == '') {
+                singleField.css('border', '2px solid red');
+                singleField.css('margin', '-1px');
+                result = false;
+            } else {
+                singleField.css('border', '1px solid #ced4da');
+                singleField.css('margin', '0px');
+                result = true;
+            }
+        })
+
+        return result;
+
+    }
+
+    firstNameField.keyup((e) => {
+        nameInputValidation(firstNameField, '([A-z]){1}\w?');
+    });
+
+    secondNameField.keyup((e) => {
+        nameInputValidation(secondNameField, '([A-z]){1}\w?');
+    });
+
+
+    nicNumberField.keyup(() => {
+        nameInputValidation(nicNumberField, '^[0-9]{12}$');
+    });
+
+    addressField.keyup( () => {
+        if(addressField.val() === ''){
+            addressField.css('border', '2px solid red');
+            addressField.css('margin', '-1px');
+            validationState = false;
+        } else {
+            addressField.css('border', '1px solid #ced4da');
+            addressField.css('margin', '0px');
+            validationState = true;
+        }
+    });
+
+    emailField.keyup(() => {
+        nameInputValidation(emailField, re);
+    });
+
+    usernameField.keyup(() => {
+        nameInputValidation(usernameField, '^[a-zA-Z0-9_]+$');
+    });
+
+    passwordFiled.keyup(() => {
+        if(passwordFiled.val() == ''){
+            passwordFiled.css('border', '2px solid red');
+            passwordFiled.css('margin', '-1px');
+            validationState = false;
+        }else if(! passwordFiled.val().length > 4){
+            passwordFiled.css('border', '2px solid red');
+            passwordFiled.css('margin', '-1px');
+            validationState = false;
+        }else{
+            passwordFiled.css('border', '1px solid #ced4da');
+            passwordFiled.css('margin', '0px');
+            validationState = true;
+        }
+    })
+
+    function updateDetails(){
+
+        if(validationState && checkEmptyState(fieldsArray)){
+
+            console.log("fields are OK");
+
+            // Getting values from the fields.
+            const firstNameFieldV = $("#firstNameField").val();
+            const secondNameFieldV =$("#secondNameField").val();
+            const nicNumberFieldV = $("#nicNumberField").val();
+            const addressFieldV = $("#addressField").val();
+            const emailFieldV = $("#emailField").val();
+            const birthdayFiledV = $("#birthdayField").val();
+            const passwordFiledV = $("#passwordField").val();
+            const  usernameFieldV = $("#usernameField").val();
+            const  userIdV = document.getElementById("userId");
+
+            let data = JSON.stringify({
+                "patientId" : userIdV.innerText,
+                "firstName": firstNameFieldV,
+                "userName":usernameFieldV,
+                "secondName":secondNameFieldV,
+                "idNumber": nicNumberFieldV,
+                "password": passwordFiledV,
+                "email":emailFieldV,
+                "address": addressFieldV,
+                "birthday": birthdayFiledV
+            })
+
+
+            $.ajax({
+                url:"http://localhost:8080/jsp-servlet-jdbc-mysql-crud-tutorial",
+                method:"PUT",
+                data:data,
+                contentType: "application/json",
+
+                success: function (resp) {
+                    alert("update success");
+                }
+            });
+
+        }else {
+            alert("Please enter correct values.");
+        }
+
+
+    }
 
     getPatientDetails();
 
@@ -236,15 +380,19 @@
         });
     }
 
-    const firstNameField = document.getElementById("firstNameField");
-    const secondNameField = document.getElementById("secondNameField");
-    const nicNumberField = document.getElementById("nicNumberField");
-    const addressField = document.getElementById("addressField");
-    const emailField = document.getElementById("emailField");
+
+
     function setDataToFields(data) {
         let searchedPatient = JSON.parse(data);
         console.log(searchedPatient)
-        firstNameField.value = searchedPatient.firstName;
+        firstNameField.val(searchedPatient.firstName);
+        secondNameField.val(searchedPatient.secondName);
+        nicNumberField.val(searchedPatient.idNumber);
+        addressField.val(searchedPatient.address);
+        emailField.val(searchedPatient.email);
+        birthdayFiled.val(searchedPatient.birthday);
+        passwordFiled.val(searchedPatient.password);
+        usernameField.val(searchedPatient.username);
     }
 
 </script>

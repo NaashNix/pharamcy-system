@@ -111,7 +111,7 @@ public class PatientBoImpl implements PatientBo {
             String password = resultSet.getString(6);
             String email = resultSet.getString(7);
             String address = resultSet.getString(8);
-            String birthday = resultSet.getString(8);
+            String birthday = resultSet.getString(9);
 
             return  new Patient(patientId,firstName,userName,secondName,idNumber,password,email,address,birthday);
 
