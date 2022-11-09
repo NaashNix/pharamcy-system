@@ -81,8 +81,6 @@ public class UserServlet extends HttpServlet {
 					)
 			);
 
-
-
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 			PrintWriter writer = resp.getWriter();
 			if(update){
